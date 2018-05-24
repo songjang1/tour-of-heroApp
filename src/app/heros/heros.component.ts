@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Hero} from '../hero';
 import {HEROES} from '../mock-heroes';
+import {HeroService} from '../hero.service';
 
 @Component({
   selector: 'app-heros',
@@ -8,15 +9,15 @@ import {HEROES} from '../mock-heroes';
   styleUrls: ['./heros.component.css']
 })
 export class HerosComponent implements OnInit, OnDestroy {
-  hero: Hero = {id: 1, name: 'winstorm'};
-  heroes: Hero[] = HEROES;
+  heroes: Hero[];
   selectedHero: Hero;
-  constructor() {
-    console.log('constructor 호출');
+  constructor(private heroService: HeroService) {
+    console.log(this.heroService);
   }
 
   ngOnInit() {
     console.log('ngOnInit() 메서드 호출');
+    this.gerHeroes();
   }
   ngOnDestroy() {
     console.log('ngOnDestroy 메서드 호출');
@@ -24,5 +25,8 @@ export class HerosComponent implements OnInit, OnDestroy {
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
   }
-
+  gerHeroes(): void {
+    /*this.heroes = this.heroService.getHeroes();*/
+    this.heroService.getHeroes().subscribe(res => this.heroes = res);
+  }
 }
